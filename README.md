@@ -1,10 +1,10 @@
-#  Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image
+#  Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image Segmentation
 
 ##  Introduction
 
 This repository contains the PyTorch implementation of:
 
-Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image, ISBI 2022.
+Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image Segmentation, ISBI 2022.
 
 ![test1](network.png)
 
@@ -90,7 +90,12 @@ python main.py --config ./expconfigs/XXX.yaml --test
 If you feel this work is helpful, please cite our paper
 
 ```
-comming soon
+@article{zhao2022cross,
+  title={Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image Segmentation},
+  author={Zhao, Xinkai and Fang, Chaowei and Fan, De-Jun and Lin, Xutao and Gao, Feng and Li, Guanbin},
+  journal={arXiv preprint arXiv:2202.04074},
+  year={2022}
+}
 ```
 
 

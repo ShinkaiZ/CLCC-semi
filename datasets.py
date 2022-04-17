@@ -82,7 +82,8 @@ class ImageDataset(Dataset):
             assert gt.max() == 255
             assert gt.min() == 0
             assert img.shape == gt.shape
-            assert img_path.split('.')[0].split('_')[0] == gt_path.split('.')[0].split('_')[0]
+            assert img_path.split('/')[-1].split('.')[0].split('_')[0] == \
+                   gt_path.split('/')[-1].split('.')[0].split('_')[0], (img_path, gt_path)
 
     def get_augmentation(self):
         return A.Compose([

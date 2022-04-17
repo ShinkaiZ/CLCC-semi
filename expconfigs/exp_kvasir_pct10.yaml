@@ -1,16 +1,17 @@
-EXP: "exp_i10"
+EXP: "exp_k10"
 
 MODEL:
   NAME: "unet"
   METHOD: "Proj"
   BCEDiceLoss: True
   FinalConLoss: True
+  FinalConsistLoss: True
   FEATURE_SCALE: 4
   PROJECT_NUM: 5
 
 DATA:
   SEG_CLASSES: 1
-  NAME: [ "ISIC" ]
+  NAME: [ "Kvasir" ]
   LABEL: 0.1
   CROP_SIZE: 64
 
@@ -33,4 +34,3 @@ TRAIN:
 VAL:
   BATCH_SIZE: 4
   EPOCH: 1
-

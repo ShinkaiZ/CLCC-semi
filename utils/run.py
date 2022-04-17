@@ -15,6 +15,7 @@ def train_clcc(_print, cfg, model, train_loader, valid_loader, criterion, valid_
     _print('train train_clcc')
 
     cont_loss = criterion[1]
+    cons_loss = criterion[2]
 
     tb = SummaryWriter(f"runs/{cfg.EXP}/{cfg.MODEL.NAME}", comment=f"{cfg.COMMENT}")
 
@@ -59,7 +60,6 @@ def train_clcc(_print, cfg, model, train_loader, valid_loader, criterion, valid_
             outputs = model(image, output_final_feat=True)
             output_target = outputs['seg_final']
             proj_final = outputs["proj_final"]
-            outputs_soft = torch.sigmoid(output_target)
 
             cn, cs = cfg.MODEL.PROJECT_NUM, cfg.DATA.SIZE // cfg.MODEL.PROJECT_NUM
             p_image = p_image.unfold(2, cs, cs).unfold(3, cs, cs).permute(
@@ -69,9 +69,6 @@ def train_clcc(_print, cfg, model, train_loader, valid_loader, criterion, valid_
             p_output_target = p_output['seg_final']
             p_proj_final = p_proj_final.reshape(bs, cn, cn, 512 // cfg.MODEL.FEATURE_SCALE, 1, 1).permute(
                 0, 3, 1, 4, 2, 5).reshape(bs, 512 // cfg.MODEL.FEATURE_SCALE, cn, cn)
-            p_output_target = p_output_target.reshape(bs, cn, cn, cfg.DATA.SEG_CLASSES, 64, 64).permute(
-                0, 3, 1, 4, 2, 5).reshape(bs, cfg.DATA.SEG_CLASSES, cn * 64, cn * 64)
-            p_output_soft = torch.sigmoid(p_output_target)
 
             loss_sup = criterion_res(output_target[:cfg.TRAIN.LB_BATCH_SIZE], target[:cfg.TRAIN.LB_BATCH_SIZE])
 
@@ -80,7 +77,7 @@ def train_clcc(_print, cfg, model, train_loader, valid_loader, criterion, valid_
                 global_cont_loss = cont_loss(proj_final, p_proj_final)
             else:
                 global_cont_loss = torch.tensor(0.0).cuda()
-                global_consistency_loss = torch.mean((p_output_soft - outputs_soft.detach()) ** 2) / 0.07
+                global_consistency_loss = cons_loss(p_output_target, output_target.detach())
 
             if epoch < cfg.OPT.WARM_UP:
                 consistency_weight = cfg.OPT.MAX_C

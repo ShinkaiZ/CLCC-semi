@@ -1,0 +1,37 @@
+EXP: "exp_i10"
+
+MODEL:
+  NAME: "unet"
+  METHOD: "Proj"
+  BCEDiceLoss: True
+  FinalConLoss: True
+  FinalConsistLoss: True
+  FEATURE_SCALE: 4
+  PROJECT_NUM: 5
+
+DATA:
+  SEG_CLASSES: 1
+  NAME: [ "ISIC" ]
+  LABEL: 0.1
+  CROP_SIZE: 64
+
+SYSTEM:
+  NUM_WORKERS: 4
+
+OPT:
+  BASE_LR: 1e-3
+  WARM_UP: 100
+  WARMUP_EPOCHS: 100
+  MAX_C: 1.0
+
+TRAIN:
+  METHOD: "CLCC"
+  EPOCHS: 300
+  BATCH_SIZE: 8
+  LB_BATCH_SIZE: 4
+  FOLD: 1
+
+VAL:
+  BATCH_SIZE: 4
+  EPOCH: 1
+

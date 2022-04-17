@@ -13,6 +13,7 @@ _C.MODEL.NAME = "Name"  # Model name
 _C.MODEL.METHOD = "Base"
 _C.MODEL.BCEDiceLoss = False
 _C.MODEL.FinalConLoss = False
+_C.MODEL.FinalConsistLoss = False
 _C.MODEL.WEIGHT = ""
 _C.MODEL.FEATURE_SCALE = 1
 _C.MODEL.PROJECT_NUM = 5

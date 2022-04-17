@@ -12,6 +12,8 @@ def get_loss(cfg):
         loss.append(BCEDiceLoss())
     if cfg.MODEL.FinalConLoss:
         loss.append(FinalConLoss())
+    if cfg.MODEL.FinalConsistLoss:
+        loss.append(FinalConsistLoss())
     if len(loss) == 0:
         raise Exception("Must choose a loss function")
     return loss
@@ -89,5 +91,26 @@ class FinalConLoss(torch.nn.Module):
 
         loss = self.cross_entropy_loss(out, torch.zeros(out.size(0), dtype=torch.long,
                                                         device=feat_q.device))
+
+        return loss
+
+
+class FinalConsistLoss(nn.Module):
+    def __init__(self):
+        super(FinalConsistLoss, self).__init__()
+
+    def forward(self, patch_outputs, output):
+        bs = output.shape[0]
+        cls = output.shape[1]
+        psz = patch_outputs.shape[-1]
+        cn = output.shape[-1] // psz
+
+        patch_outputs = patch_outputs.reshape(bs, cn, cn, cls, psz, psz)
+        output = output.reshape(bs, cls, cn, psz, cn, psz).permute(0, 2, 4, 1, 3, 5)
+
+        p_output_soft = torch.sigmoid(patch_outputs)
+        outputs_soft = torch.sigmoid(output)
+
+        loss = torch.mean((p_output_soft - outputs_soft) ** 2, dim=(0, 3, 4, 5)).sum()
 
         return loss
