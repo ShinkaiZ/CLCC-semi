@@ -90,11 +90,13 @@ python main.py --config ./expconfigs/XXX.yaml --test
 If you feel this work is helpful, please cite our paper
 
 ```
-@article{zhao2022cross,
-  title={Cross-level Contrastive Learning and Consistency Constraint for Semi-supervised Medical Image Segmentation},
+@inproceedings{zhao2022cross,
+  title={Cross-Level Contrastive Learning and Consistency Constraint for Semi-Supervised Medical Image Segmentation},
   author={Zhao, Xinkai and Fang, Chaowei and Fan, De-Jun and Lin, Xutao and Gao, Feng and Li, Guanbin},
-  journal={arXiv preprint arXiv:2202.04074},
-  year={2022}
+  booktitle={2022 IEEE 19th International Symposium on Biomedical Imaging (ISBI)},
+  pages={1--5},
+  year={2022},
+  organization={IEEE}
 }
 ```
 
